@@ -1,0 +1,31 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.3'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.mikevitale'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	implementation 'javax.validation:validation-api'
+	implementation 'org.hibernate.validator:hibernate-validator'
+	implementation 'javax.el:javax.el-api:3.0.1-b06'
+
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.3'
+	implementation 'org.projectlombok:lombok'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testCompile 'junit:junit:4.13'
+}
+
+test {
+	useJUnitPlatform()
+}
