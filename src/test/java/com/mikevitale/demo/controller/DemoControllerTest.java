@@ -52,6 +52,7 @@ public class DemoControllerTest {
 
 	@Test(expected = NestedServletException.class)
 	public void invalidUsernameTooLong() throws Exception {
+		// TODO: I dislike this expected Exception, and that I can't validate the error message.
 		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/wpeurhgiouwerhgoiuwerhgo");
 		ResultActions actions = whenTheRequestIsMade(request);
 //		String response = "getUsernameAsString.username: Username Size Validation Message";
