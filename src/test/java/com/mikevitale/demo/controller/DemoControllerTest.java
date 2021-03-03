@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.NestedServletException;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(DemoController.class)
@@ -41,14 +43,55 @@ public class DemoControllerTest {
 
 	@Test
 	public void validUsername() throws Exception {
-		MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-				.get("/java/string/mike")
-				.characterEncoding("UTF-8");
-		ResultActions actions = mvc.perform(request);
+		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/mike");
+		ResultActions actions = whenTheRequestIsMade(request);
 		thenExpect(actions,
 				MockMvcResultMatchers.status().isOk(),
 				MockMvcResultMatchers.content().bytes("Username is valid".getBytes()));
 	}
+
+	@Test(expected = NestedServletException.class)
+	public void invalidUsernameTooLong() throws Exception {
+		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/wpeurhgiouwerhgoiuwerhgo");
+		ResultActions actions = whenTheRequestIsMade(request);
+//		String response = "getUsernameAsString.username: Username Size Validation Message";
+//		ContentResultMatchers content = MockMvcResultMatchers.content();
+//
+//		thenExpect(actions,
+//				MockMvcResultMatchers.status().isBadRequest(),
+//				content.contentType(MediaType.APPLICATION_JSON),
+//				content.json(response));
+	}
+
+	@Test
+	public void shoutsWhenPathVariableIdIsAbove9999() throws Exception {
+		final var request = givenARequestFor("/validatePathVariable/10000");
+		final ResultActions resultActions = whenTheRequestIsMade(request);
+		final var response = "{\n" +
+		                     "    \"validationErrors\": [\n" +
+		                     "        {\n" +
+		                     "            \"fieldName\": \"validatePathVariable.id\",\n" +
+		                     "            \"message\": \"A maximum value of 9999 can be given\"\n" +
+		                     "        }\n" +
+		                     "    ]\n" +
+		                     "}";
+		final var content = MockMvcResultMatchers.content();
+		thenExpect(resultActions,
+				MockMvcResultMatchers.status().isBadRequest(),
+				content.contentType(MediaType.APPLICATION_JSON),
+				content.json(response));
+	}
+
+	private MockHttpServletRequestBuilder givenARequestFor(String url) {
+		return MockMvcRequestBuilders.get(url)
+		                             .characterEncoding("UTF-8");
+	}
+
+	private ResultActions whenTheRequestIsMade(MockHttpServletRequestBuilder request) throws Exception {
+		return mvc.perform(request);
+	}
+
+
 
 	private void thenExpect(ResultActions resultActions, ResultMatcher... matchers) throws Exception {
 		resultActions.andExpect(ResultMatcher.matchAll(matchers));
