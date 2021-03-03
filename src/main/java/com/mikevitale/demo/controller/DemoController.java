@@ -21,6 +21,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @Validated
+@RequestMapping("/")
 public class DemoController {
 	private static final Logger LOG = Logger.getLogger(DemoController.class.getName());
 
@@ -28,7 +29,7 @@ public class DemoController {
 
 	Validator validator = validatorFactory.getValidator();
 
-	@GetMapping(path = "/java/string/{username}",
+	@GetMapping(path = "java/string/{username}",
 			produces = APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<String> getUsernameAsString(
@@ -38,10 +39,7 @@ public class DemoController {
 			@Valid String username) {
 		LOG.info(() -> String.format("Got Username [%s]", username));
 
-//		Set<ConstraintViolation<String>> violations = validator.validate(username);
-//		printViolations(violations);
-
-		System.out.println(String.format("Username is [%s]%n", username));
+		System.out.printf("Username is [%s]%n%n", username);
 
 		return ResponseEntity.ok("Username is valid");
 	}
@@ -56,7 +54,7 @@ public class DemoController {
 		return ResponseEntity.ok("valid");
 	}
 
-	@GetMapping(path = "/java/string2/{username}",
+	@GetMapping(path = "java/string2/{username}",
 			produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getUsernameAsString2(
 			@PathVariable("username") @NotBlank @Size(max = 10) String username) {
@@ -64,7 +62,7 @@ public class DemoController {
 		Set<ConstraintViolation<String>> violations = validator.validate(username);
 		printViolations(violations);
 
-		System.out.println(String.format("Username is [%s]%n", username));
+		System.out.printf("Username is [%s]%n%n", username);
 
 		return ResponseEntity.ok("Username is valid");
 	}
@@ -75,7 +73,7 @@ public class DemoController {
 		}
 	}
 
-	@PostMapping(path = "/java/object",
+	@PostMapping(path = "java/object",
 			produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getUsernameAsObject(@Valid @RequestBody JavaUsername username) {
 		return ResponseEntity.ok("Username is valid");

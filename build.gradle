@@ -1,6 +1,7 @@
 plugins {
+//	id 'org.springframework.boot' version '2.4.0-M3'
 	id 'org.springframework.boot' version '2.4.3'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
 }
 
@@ -10,20 +11,26 @@ sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	implementation 'javax.validation:validation-api'
 	implementation 'org.hibernate.validator:hibernate-validator'
 	implementation 'javax.el:javax.el-api:3.0.1-b06'
 
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.3'
 	implementation 'org.projectlombok:lombok'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testCompile 'junit:junit:4.13'
+	testImplementation 'io.projectreactor:reactor-test'
+//	testCompile 'junit:junit:4.13'
+	testCompile 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+	testCompile 'org.junit.jupiter:junit-jupiter-params:5.4.2'
+	testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.4.2'
 }
 
 test {
