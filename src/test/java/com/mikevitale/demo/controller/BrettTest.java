@@ -5,6 +5,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,6 +19,7 @@ public class BrettTest {
 	}
 
 	@Test
+	@Ignore
 	public void goodRequestString() throws Exception {
 		RestTemplate rt = new RestTemplate();
 
