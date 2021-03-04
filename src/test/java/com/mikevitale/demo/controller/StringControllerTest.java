@@ -16,9 +16,9 @@ import org.springframework.test.web.servlet.result.ContentResultMatchers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(DemoController.class)
+@WebMvcTest(StringController.class)
 @AutoConfigureMockMvc
-public class DemoControllerTest {
+public class StringControllerTest {
 	@Autowired
 	private MockMvc mvc;
 

@@ -24,8 +24,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @Validated
 @RequestMapping("/java/")
-public class DemoController {
-	private static final Logger LOG = Logger.getLogger(DemoController.class.getName());
+public class StringController {
+	private static final Logger LOG = Logger.getLogger(StringController.class.getName());
 
 	@GetMapping(path = "string/{username}",
 			produces = APPLICATION_JSON_VALUE)
