@@ -28,7 +28,7 @@ public class JavaUsernameTest {
 	public void validUsernameMinSize() {
 		JavaUsername username = new JavaUsername();
 
-		username.setUsername("a");
+		username.setUsername("ab");
 
 		Set<ConstraintViolation<JavaUsername>> violations = validator.validate(username);
 
@@ -69,7 +69,7 @@ public class JavaUsernameTest {
 	public void usernameCannotContainNumber() {
 		JavaUsername username = new JavaUsername();
 
-		username.setUsername("1");
+		username.setUsername("12");
 
 		Set<ConstraintViolation<JavaUsername>> violations = validator.validate(username);
 		printViolations(violations);
@@ -84,7 +84,22 @@ public class JavaUsernameTest {
 	public void usernameTooShort() {
 		JavaUsername username = new JavaUsername();
 
-		username.setUsername("");
+		username.setUsername("a");
+
+		Set<ConstraintViolation<JavaUsername>> violations = validator.validate(username);
+		printViolations(violations);
+
+		assertFalse(violations.isEmpty());
+		assertEquals(1, violations.size());
+		assertEquals("Username Size Validation Message",
+				Objects.requireNonNull(violations.stream().findFirst().orElse(null)).getMessage());
+	}
+
+	@Test
+	public void usernameTooShortAndDoesntMatchPattern() {
+		JavaUsername username = new JavaUsername();
+
+		username.setUsername("1");
 
 		Set<ConstraintViolation<JavaUsername>> violations = validator.validate(username);
 		printViolations(violations);
