@@ -24,7 +24,7 @@ public class StringController {
 	public ResponseEntity<String> validateStringPathVariable(
 			@PathVariable("username")
 			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
-			@Size(min = 1, max = 15, message = "Username Size Validation Message")
+			@Size(min = 2, max = 15, message = "Username Size Validation Message")
 			@Valid String username) {
 		LOG.info(() -> String.format("Got Username [%s]", username));
 

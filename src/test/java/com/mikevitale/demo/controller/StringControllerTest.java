@@ -32,6 +32,26 @@ public class StringControllerTest {
 	}
 
 	@Test
+	public void shoutsWhenStringPathVariableIsTooShort() throws Exception {
+		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/a");
+		ResultActions actions = whenTheRequestIsMade(request);
+		final var response = "{\n" +
+		                     "    \"validationErrors\": [\n" +
+		                     "        {\n" +
+		                     "            \"fieldName\": \"validateStringPathVariable.username\",\n" +
+		                     "            \"message\": \"Username Size Validation Message\"\n" +
+		                     "        }\n" +
+		                     "    ]\n" +
+		                     "}";
+		ContentResultMatchers content = MockMvcResultMatchers.content();
+
+		thenExpect(actions,
+				MockMvcResultMatchers.status().isBadRequest(),
+				content.contentType(MediaType.APPLICATION_JSON),
+				content.json(response));
+	}
+
+	@Test
 	public void shoutsWhenStringPathVariableIsTooLong() throws Exception {
 		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/wpeurhgiouwerhgoiuwerhgo");
 		ResultActions actions = whenTheRequestIsMade(request);
