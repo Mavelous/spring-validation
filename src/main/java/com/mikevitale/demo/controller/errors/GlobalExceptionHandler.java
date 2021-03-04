@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 /**
  * The @ControllerAdvice annotation allows us to consolidate our
@@ -47,15 +48,15 @@ public class GlobalExceptionHandler {
 	@ResponseBody
 	public ValidationErrorResponse onConstraintValidationException(
 			ConstraintViolationException e) {
-		var error = new ValidationErrorResponse();
+		var errors = new ValidationErrorResponse();
 
 		e.getConstraintViolations()
 		 .stream()
 		 .map(violation -> new ValidationError(violation.getPropertyPath().toString(),
 				 violation.getMessage()))
-		 .forEach(validationError -> error.add(validationError));
+		 .forEach(validationError -> errors.add(validationError));
 
-		return error;
+		return errors;
 	}
 
 	/**
@@ -68,13 +69,29 @@ public class GlobalExceptionHandler {
 	@ResponseBody
 	public ValidationErrorResponse onMethodArgumentNotValidException(
 			MethodArgumentNotValidException e) {
-		var error = new ValidationErrorResponse();
+		var errors = new ValidationErrorResponse();
 
 		e.getBindingResult().getFieldErrors()
 		 .stream()
 		 .map(fieldError -> new ValidationError(fieldError.getField(), fieldError.getDefaultMessage()))
-		 .forEach(validationError -> error.add(validationError));
+		 .forEach(validationError -> errors.add(validationError));
 
-		return error;
+		return errors;
+	}
+
+	/**
+	 * What we’re doing here is simply reading information about
+	 * the violations out of the exceptions and translating them
+	 * into our ValidationErrorResponse data structure.
+	 */
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ValidationErrorResponse onMethodArgumentNotValidException(MethodArgumentTypeMismatchException e) {
+		var errors = new ValidationErrorResponse();
+
+		errors.add(new ValidationError(e.getName(), e.getMessage()));
+
+		return errors;
 	}
 }

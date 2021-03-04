@@ -2,11 +2,16 @@ package com.mikevitale.demo.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.validation.*;
-import javax.validation.constraints.*;
+import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import com.mikevitale.demo.model.JavaUsername;
 
@@ -32,7 +37,7 @@ public class DemoController {
 	@GetMapping(path = "string/{username}",
 			produces = APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public ResponseEntity<String> getUsernameAsString(
+	public ResponseEntity<String> validateStringPathVariable(
 			@PathVariable("username")
 			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
 			@Size(min = 1, max = 15, message = "Username Size Validation Message")
@@ -44,33 +49,15 @@ public class DemoController {
 		return ResponseEntity.ok("Username is valid");
 	}
 
-	@GetMapping("validatePathVariable/{id}")
-	ResponseEntity<String> validatePathVariable(
+	@GetMapping("int/{id}")
+	@ResponseBody
+	ResponseEntity<String> validateIntPathVariable(
 			@PathVariable("id")
 			@Min(value = 5, message = "A minimum value of 5 is required")
 			@Max(value = 9999, message = "A maximum value of 9999 can be given")
 					int id) {
 		LOG.info(() -> String.format("validatePathVariable(), Got id = %d", id));
-		return ResponseEntity.ok("valid");
-	}
-
-	@GetMapping(path = "string2/{username}",
-			produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> getUsernameAsString2(
-			@PathVariable("username") @NotBlank @Size(max = 10) String username) {
-
-		Set<ConstraintViolation<String>> violations = validator.validate(username);
-		printViolations(violations);
-
-		System.out.printf("Username is [%s]%n%n", username);
-
-		return ResponseEntity.ok("Username is valid");
-	}
-
-	private void printViolations(Set<ConstraintViolation<String>> violations) {
-		for (ConstraintViolation<String> violation : violations) {
-			System.out.printf("***** ==> [%s]%n", violation.getMessage());
-		}
+		return ResponseEntity.ok("ID is valid");
 	}
 
 	@PostMapping(path = "java/object",

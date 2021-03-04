@@ -27,7 +27,7 @@ public class DemoControllerTest {
 	Validator validator;
 
 	@Test
-	public void validUsername() throws Exception {
+	public void validStringPathVariable() throws Exception {
 		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/mike");
 		ResultActions actions = whenTheRequestIsMade(request);
 		thenExpect(actions,
@@ -36,13 +36,13 @@ public class DemoControllerTest {
 	}
 
 	@Test
-	public void invalidUsernameTooLong() throws Exception {
+	public void shoutsWhenStringPathVariableIsTooLong() throws Exception {
 		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/wpeurhgiouwerhgoiuwerhgo");
 		ResultActions actions = whenTheRequestIsMade(request);
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"getUsernameAsString.username\",\n" +
+		                     "            \"fieldName\": \"validateStringPathVariable.username\",\n" +
 		                     "            \"message\": \"Username Size Validation Message\"\n" +
 		                     "        }\n" +
 		                     "    ]\n" +
@@ -56,14 +56,61 @@ public class DemoControllerTest {
 	}
 
 	@Test
-	public void shoutsWhenPathVariableIdIsAbove9999() throws Exception {
-		final var request = givenARequestFor("/java/validatePathVariable/10000");
+	public void validIntegerPathVariable() throws Exception {
+		MockHttpServletRequestBuilder request = givenARequestFor("/java/int/5");
+		ResultActions actions = whenTheRequestIsMade(request);
+		thenExpect(actions,
+				MockMvcResultMatchers.status().isOk(),
+				MockMvcResultMatchers.content().bytes("ID is valid".getBytes()));
+	}
+
+	@Test
+	public void shoutsWhenIntegerPathVariableIsTooLow() throws Exception {
+		final var request = givenARequestFor("/java/int/4");
 		final ResultActions resultActions = whenTheRequestIsMade(request);
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"validatePathVariable.id\",\n" +
+		                     "            \"fieldName\": \"validateIntPathVariable.id\",\n" +
+		                     "            \"message\": \"A minimum value of 5 is required\"\n" +
+		                     "        }\n" +
+		                     "    ]\n" +
+		                     "}";
+		final var content = MockMvcResultMatchers.content();
+		thenExpect(resultActions,
+				MockMvcResultMatchers.status().isBadRequest(),
+				content.contentType(MediaType.APPLICATION_JSON),
+				content.json(response));
+	}
+
+	@Test
+	public void shoutsWhenIntegerPathVariableIsTooHigh() throws Exception {
+		final var request = givenARequestFor("/java/int/10000");
+		final ResultActions resultActions = whenTheRequestIsMade(request);
+		final var response = "{\n" +
+		                     "    \"validationErrors\": [\n" +
+		                     "        {\n" +
+		                     "            \"fieldName\": \"validateIntPathVariable.id\",\n" +
 		                     "            \"message\": \"A maximum value of 9999 can be given\"\n" +
+		                     "        }\n" +
+		                     "    ]\n" +
+		                     "}";
+		final var content = MockMvcResultMatchers.content();
+		thenExpect(resultActions,
+				MockMvcResultMatchers.status().isBadRequest(),
+				content.contentType(MediaType.APPLICATION_JSON),
+				content.json(response));
+	}
+
+	@Test
+	public void shoutsWhenStringIsPassedToIntegerPathVariable() throws Exception {
+		final var request = givenARequestFor("/java/int/wegyrguywery");
+		final ResultActions resultActions = whenTheRequestIsMade(request);
+		final var response = "{\n" +
+		                     "    \"validationErrors\": [\n" +
+		                     "        {\n" +
+		                     "            \"fieldName\": \"id\",\n" +
+		                     "            \"message\": \"Failed to convert value of type 'java.lang.String' to required type 'int'; nested exception is java.lang.NumberFormatException: For input string: \\\"wegyrguywery\\\"\"\n" +
 		                     "        }\n" +
 		                     "    ]\n" +
 		                     "}";
