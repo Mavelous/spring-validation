@@ -1,7 +1,5 @@
 package com.mikevitale.demo.controller;
 
-import javax.validation.Validator;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +21,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class DemoControllerTest {
 	@Autowired
 	private MockMvc mvc;
-
-	Validator validator;
 
 	@Test
 	public void validStringPathVariable() throws Exception {

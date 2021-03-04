@@ -5,9 +5,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.validation.Valid;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Pattern;
@@ -29,10 +26,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/java/")
 public class DemoController {
 	private static final Logger LOG = Logger.getLogger(DemoController.class.getName());
-
-	ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-
-	Validator validator = validatorFactory.getValidator();
 
 	@GetMapping(path = "string/{username}",
 			produces = APPLICATION_JSON_VALUE)
