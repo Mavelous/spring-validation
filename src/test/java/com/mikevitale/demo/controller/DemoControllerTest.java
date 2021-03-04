@@ -57,7 +57,7 @@ public class DemoControllerTest {
 
 	@Test
 	public void shoutsWhenPathVariableIdIsAbove9999() throws Exception {
-		final var request = givenARequestFor("/validatePathVariable/10000");
+		final var request = givenARequestFor("/java/validatePathVariable/10000");
 		final ResultActions resultActions = whenTheRequestIsMade(request);
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +

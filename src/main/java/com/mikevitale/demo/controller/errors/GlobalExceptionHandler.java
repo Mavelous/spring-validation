@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  *   as the status code.
  * - It provides mapping of several exceptions to the same method, to
  *   be handled together.
- * - It makes good use of the newer RESTful ResposeEntity response.
+ * - It makes good use of the newer RESTful ResponseEntity response.
  *
  * Keep in mind to match the exceptions declared with @ExceptionHandler
  * to the exception used as the argument of the method.
@@ -48,11 +48,13 @@ public class GlobalExceptionHandler {
 	public ValidationErrorResponse onConstraintValidationException(
 			ConstraintViolationException e) {
 		var error = new ValidationErrorResponse();
+
 		e.getConstraintViolations()
 		 .stream()
 		 .map(violation -> new ValidationError(violation.getPropertyPath().toString(),
 				 violation.getMessage()))
-		 .forEach(validationError ->  error.add(validationError));
+		 .forEach(validationError -> error.add(validationError));
+
 		return error;
 	}
 
@@ -67,10 +69,12 @@ public class GlobalExceptionHandler {
 	public ValidationErrorResponse onMethodArgumentNotValidException(
 			MethodArgumentNotValidException e) {
 		var error = new ValidationErrorResponse();
+
 		e.getBindingResult().getFieldErrors()
 		 .stream()
 		 .map(fieldError -> new ValidationError(fieldError.getField(), fieldError.getDefaultMessage()))
 		 .forEach(validationError -> error.add(validationError));
+
 		return error;
 	}
 }

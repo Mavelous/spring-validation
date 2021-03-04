@@ -21,7 +21,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
 @Validated
-@RequestMapping("/")
+@RequestMapping("/java/")
 public class DemoController {
 	private static final Logger LOG = Logger.getLogger(DemoController.class.getName());
 
@@ -29,7 +29,7 @@ public class DemoController {
 
 	Validator validator = validatorFactory.getValidator();
 
-	@GetMapping(path = "java/string/{username}",
+	@GetMapping(path = "string/{username}",
 			produces = APPLICATION_JSON_VALUE)
 	@ResponseBody
 	public ResponseEntity<String> getUsernameAsString(
@@ -54,7 +54,7 @@ public class DemoController {
 		return ResponseEntity.ok("valid");
 	}
 
-	@GetMapping(path = "java/string2/{username}",
+	@GetMapping(path = "string2/{username}",
 			produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getUsernameAsString2(
 			@PathVariable("username") @NotBlank @Size(max = 10) String username) {
