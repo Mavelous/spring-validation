@@ -59,6 +59,27 @@ public class ObjectControllerTest {
 				content.json(response));
 	}
 
+	@Test
+	public void shoutsWhenObjectNameIsTooShort() throws Exception {
+		JavaUsername username = new JavaUsername("a");
+		final var request = givenARequestForUsername(username);
+		final ResultActions actions = whenTheRequestIsMade(request);
+
+		final var response = "{\n" +
+		                     "    \"validationErrors\": [\n" +
+		                     "        {\n" +
+		                     "            \"fieldName\": \"username\",\n" +
+		                     "            \"message\": \"Username Size Validation Message\"\n" +
+		                     "        }\n" +
+		                     "    ]\n" +
+		                     "}";
+		final var content = MockMvcResultMatchers.content();
+		thenExpect(actions,
+				MockMvcResultMatchers.status().isBadRequest(),
+				content.contentType(MediaType.APPLICATION_JSON),
+				content.json(response));
+	}
+
 	private MockHttpServletRequestBuilder givenARequestForUsername(JavaUsername username) throws JsonProcessingException {
 		var requestBody = objectMapper.writeValueAsString(username);
 		return givenARequestFor(requestBody);
