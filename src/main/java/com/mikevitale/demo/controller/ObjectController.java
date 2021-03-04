@@ -22,8 +22,11 @@ public class ObjectController {
 	private static final Logger LOG = Logger.getLogger(ObjectController.class.getName());
 
 	@PostMapping(path = "object",
+			consumes = APPLICATION_JSON_VALUE,
 			produces = APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getUsernameAsObject(@Valid @RequestBody JavaUsername username) {
+		LOG.info(() -> String.format("Got Username [%s]", username));
+
 		return ResponseEntity.ok("Username is valid");
 	}
 }

@@ -1,15 +1,22 @@
 package com.mikevitale.demo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mikevitale.demo.model.JavaUsername;
+
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(ObjectController.class)
@@ -18,9 +25,29 @@ public class ObjectControllerTest {
 	@Autowired
 	private MockMvc mvc;
 
-	private MockHttpServletRequestBuilder givenARequestFor(String url) {
-		return MockMvcRequestBuilders.get(url)
-		                             .characterEncoding("UTF-8");
+	@Autowired
+	private ObjectMapper objectMapper;
+
+	@Test
+	public void validObject() throws Exception {
+		JavaUsername validUsername = new JavaUsername("mike");
+		final var request = givenARequestFor(validUsername);
+		final ResultActions resultActions = whenTheRequestIsMade(request);
+		thenExpect(resultActions,
+				MockMvcResultMatchers.status().isOk(),
+				MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
+	}
+
+	private MockHttpServletRequestBuilder givenARequestFor(JavaUsername username) throws JsonProcessingException {
+		var requestBody = objectMapper.writeValueAsString(username);
+		return givenARequestFor(requestBody);
+	}
+
+	private MockHttpServletRequestBuilder givenARequestFor(String requestBody) {
+		return MockMvcRequestBuilders.post("/java/object")
+		                             .contentType(MediaType.APPLICATION_JSON)
+		                             .characterEncoding("UTF-8")
+		                             .content(requestBody);
 	}
 
 	private ResultActions whenTheRequestIsMade(MockHttpServletRequestBuilder request) throws Exception {
