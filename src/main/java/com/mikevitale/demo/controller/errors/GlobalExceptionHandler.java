@@ -39,9 +39,10 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 public class GlobalExceptionHandler {
 
 	/**
-	 * What we’re doing here is simply reading information about
-	 * the violations out of the exceptions and translating them
-	 * into our ValidationErrorResponse data structure.
+	 * What we’re doing here (in each method) is simply reading
+	 * information about the violations out of the exceptions and
+	 * translating them into our ValidationErrorResponse data
+	 * structure.
 	 */
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -59,11 +60,6 @@ public class GlobalExceptionHandler {
 		return errors;
 	}
 
-	/**
-	 * What we’re doing here is simply reading information about
-	 * the violations out of the exceptions and translating them
-	 * into our ValidationErrorResponse data structure.
-	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
@@ -79,11 +75,6 @@ public class GlobalExceptionHandler {
 		return errors;
 	}
 
-	/**
-	 * What we’re doing here is simply reading information about
-	 * the violations out of the exceptions and translating them
-	 * into our ValidationErrorResponse data structure.
-	 */
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody

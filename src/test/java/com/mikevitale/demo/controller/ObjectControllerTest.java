@@ -31,14 +31,35 @@ public class ObjectControllerTest {
 	@Test
 	public void validObject() throws Exception {
 		JavaUsername validUsername = new JavaUsername("mike");
-		final var request = givenARequestFor(validUsername);
-		final ResultActions resultActions = whenTheRequestIsMade(request);
-		thenExpect(resultActions,
+		final var request = givenARequestForUsername(validUsername);
+		final ResultActions actions = whenTheRequestIsMade(request);
+		thenExpect(actions,
 				MockMvcResultMatchers.status().isOk(),
 				MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
 	}
 
-	private MockHttpServletRequestBuilder givenARequestFor(JavaUsername username) throws JsonProcessingException {
+	@Test
+	public void shoutsWhenObjectNameIsTooLong() throws Exception {
+		JavaUsername username = new JavaUsername("wpeurhgiouwerhgoiuwerhgo");
+		final var request = givenARequestForUsername(username);
+		final ResultActions actions = whenTheRequestIsMade(request);
+
+		final var response = "{\n" +
+		                     "    \"validationErrors\": [\n" +
+		                     "        {\n" +
+		                     "            \"fieldName\": \"username\",\n" +
+		                     "            \"message\": \"Username Size Validation Message\"\n" +
+		                     "        }\n" +
+		                     "    ]\n" +
+		                     "}";
+		final var content = MockMvcResultMatchers.content();
+		thenExpect(actions,
+				MockMvcResultMatchers.status().isBadRequest(),
+				content.contentType(MediaType.APPLICATION_JSON),
+				content.json(response));
+	}
+
+	private MockHttpServletRequestBuilder givenARequestForUsername(JavaUsername username) throws JsonProcessingException {
 		var requestBody = objectMapper.writeValueAsString(username);
 		return givenARequestFor(requestBody);
 	}
