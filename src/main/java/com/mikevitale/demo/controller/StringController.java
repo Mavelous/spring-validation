@@ -6,8 +6,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.mikevitale.demo.model.JavaUsername;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +30,6 @@ public class StringController {
 
 		System.out.printf("Username is [%s]%n%n", username);
 
-		return ResponseEntity.ok("Username is valid");
-	}
-
-	@PostMapping(path = "java/object",
-			produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> getUsernameAsObject(@Valid @RequestBody JavaUsername username) {
 		return ResponseEntity.ok("Username is valid");
 	}
 }
