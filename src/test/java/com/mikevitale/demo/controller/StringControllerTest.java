@@ -91,6 +91,30 @@ public class StringControllerTest {
 				content.json(response));
 	}
 
+	@Test
+	public void shoutsWhenStringPathVariableIsTooLongAndDoesntMatchPattern() throws Exception {
+		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/wpeurhgiouwerhgoiuwerhgo42");
+		ResultActions actions = whenTheRequestIsMade(request);
+		final var response = "{\n" +
+		                     "    \"validationErrors\": [\n" +
+		                     "        {\n" +
+		                     "            \"fieldName\": \"validateStringPathVariable.username\",\n" +
+		                     "            \"message\": \"Username Pattern Validation Message\"\n" +
+		                     "        },\n" +
+		                     "        {\n" +
+		                     "            \"fieldName\": \"validateStringPathVariable.username\",\n" +
+		                     "            \"message\": \"Username Size Validation Message\"\n" +
+		                     "        }\n" +
+		                     "    ]\n" +
+		                     "}";
+		ContentResultMatchers content = MockMvcResultMatchers.content();
+
+		thenExpect(actions,
+				MockMvcResultMatchers.status().isBadRequest(),
+				content.contentType(MediaType.APPLICATION_JSON),
+				content.json(response));
+	}
+
 	private MockHttpServletRequestBuilder givenARequestFor(String url) {
 		return MockMvcRequestBuilders.get(url)
 		                             .characterEncoding("UTF-8");
