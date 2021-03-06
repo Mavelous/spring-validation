@@ -5,6 +5,7 @@ import java.net.URI;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mikevitale.demo.model.JavaUsername;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -24,6 +25,7 @@ public class RequestEntityTest {
 
 
 	@Test
+	@Disabled
 	public void shouldTestRequestEntity() throws Exception {
 		JavaUsername name = new JavaUsername("ben");
 
