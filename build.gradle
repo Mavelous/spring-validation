@@ -23,8 +23,6 @@ dependencies {
 	implementation 'org.hibernate.validator:hibernate-validator'
 	implementation 'javax.el:javax.el-api:3.0.1-b06'
 
-	implementation 'org.projectlombok:lombok'
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 //	testCompile 'junit:junit:4.13'
