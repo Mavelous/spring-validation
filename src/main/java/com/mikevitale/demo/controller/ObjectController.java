@@ -6,15 +6,10 @@ import javax.validation.Valid;
 
 import com.mikevitale.demo.model.JavaUsername;
 
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -32,11 +27,19 @@ public class ObjectController {
 		return ResponseEntity.ok("Username is valid");
 	}
 
-	@PostMapping(path = "object2",
-			consumes = APPLICATION_FORM_URLENCODED_VALUE,
+	@PutMapping(path = "object",
+			consumes = APPLICATION_JSON_VALUE,
 			produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> getUsernameAsObject2(RequestEntity<JavaUsername> entity) {
-		JavaUsername username = entity.getBody();
+	public ResponseEntity<String> putUsernameAsObject(@Valid @RequestBody JavaUsername username) {
+		LOG.info(() -> String.format("Got Username [%s]", username));
+
+		return ResponseEntity.ok("Username is valid");
+	}
+
+	@DeleteMapping(path = "object/{username}",
+			consumes = APPLICATION_JSON_VALUE,
+			produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> deleteUsernameAsObject(@Valid @PathVariable("username") JavaUsername username) {
 		LOG.info(() -> String.format("Got Username [%s]", username));
 
 		return ResponseEntity.ok("Username is valid");
