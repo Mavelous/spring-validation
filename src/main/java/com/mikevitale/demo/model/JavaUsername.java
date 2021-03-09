@@ -7,7 +7,6 @@ import javax.validation.constraints.Size;
 public class JavaUsername {
 	@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
 	@Size(min = 2, max = 15, message = "Username Size Validation Message")
-	@Valid
 	public String username;
 
 	public JavaUsername() {}
