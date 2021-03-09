@@ -2,7 +2,6 @@ package com.mikevitale.demo.controller;
 
 import java.util.logging.Logger;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -25,7 +24,7 @@ public class StringController {
 			@PathVariable("username")
 			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
 			@Size(min = 2, max = 15, message = "Username Size Validation Message")
-			@Valid String username) {
+			String username) {
 		LOG.info(() -> String.format("validateStringPathVariable: Got Username [%s]", username));
 
 		System.out.printf("validateStringPathVariable: Username is [%s]%n", username);
@@ -40,7 +39,7 @@ public class StringController {
 	public ResponseEntity<String> validateStringPost(
 			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
 			@Size(min = 2, max = 15, message = "Username Size Validation Message")
-			@RequestBody @Valid String username) {
+			@RequestBody String username) {
 		LOG.info(() -> String.format("validateStringPost: Got Username [%s]", username));
 
 		System.out.printf("validateStringPost: Username is [%s]%n", username);
@@ -55,7 +54,7 @@ public class StringController {
 	public ResponseEntity<String> validateStringPut(
 			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
 			@Size(min = 2, max = 15, message = "Username Size Validation Message")
-			@RequestBody @Valid String username) {
+			@RequestBody String username) {
 		LOG.info(() -> String.format("validateStringPost: Got Username [%s]", username));
 
 		System.out.printf("validateStringPost: Username is [%s]%n", username);
@@ -70,7 +69,7 @@ public class StringController {
 	public ResponseEntity<String> validateStringDelete(
 			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
 			@Size(min = 2, max = 15, message = "Username Size Validation Message")
-			@RequestBody @Valid String username) {
+			@RequestBody String username) {
 		LOG.info(() -> String.format("validateStringPost: Got Username [%s]", username));
 
 		System.out.printf("validateStringPost: Username is [%s]%n", username);

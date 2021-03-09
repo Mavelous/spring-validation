@@ -1,8 +1,11 @@
 package com.mikevitale.demo.controller.errors;
 
+import java.io.IOException;
+
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -82,6 +85,17 @@ public class GlobalExceptionHandler {
 		var errors = new ValidationErrorResponse();
 
 		errors.add(new ValidationError(e.getName(), e.getMessage()));
+
+		return errors;
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ResponseBody
+	public ValidationErrorResponse onMethodArgumentNotValidException(HttpMessageNotReadableException e) throws IOException {
+		var errors = new ValidationErrorResponse();
+
+		errors.add(new ValidationError(e.getHttpInputMessage().getBody().toString(), e.getMessage()));
 
 		return errors;
 	}
