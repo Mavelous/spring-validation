@@ -62,4 +62,19 @@ public class StringController {
 
 		return ResponseEntity.ok("Username is valid");
 	}
+
+	@DeleteMapping(path = "string",
+			consumes = APPLICATION_JSON_VALUE,
+			produces = APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> validateStringDelete(
+			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
+			@Size(min = 2, max = 15, message = "Username Size Validation Message")
+			@RequestBody @Valid String username) {
+		LOG.info(() -> String.format("validateStringPost: Got Username [%s]", username));
+
+		System.out.printf("validateStringPost: Username is [%s]%n", username);
+
+		return ResponseEntity.ok("Username is valid");
+	}
 }
