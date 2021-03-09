@@ -1,5 +1,7 @@
 package com.mikevitale.demo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +20,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(StringController.class)
 @AutoConfigureMockMvc
-public class StringControllerTest {
+public class StringPostControllerTest {
 	@Autowired
 	private MockMvc mvc;
 
 	@Test
-	public void validStringPathVariable() throws Exception {
-		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/mike");
+	public void validStringPost() throws Exception {
+		String value = "mike";
+		MockHttpServletRequestBuilder request = givenARequestFor("/java/string", value);
 		ResultActions actions = whenTheRequestIsMade(request);
 		thenExpect(actions,
 				MockMvcResultMatchers.status().isOk(),
@@ -32,13 +35,14 @@ public class StringControllerTest {
 	}
 
 	@Test
-	public void shoutsWhenStringPathVariableIsTooShort() throws Exception {
-		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/a");
+	public void shoutsWhenStringPostIsTooShort() throws Exception {
+		String value = "a";
+		MockHttpServletRequestBuilder request = givenARequestFor("/java/string", value);
 		ResultActions actions = whenTheRequestIsMade(request);
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"validateStringPathVariable.username\",\n" +
+		                     "            \"fieldName\": \"validateStringPost.username\",\n" +
 		                     "            \"message\": \"Username Size Validation Message\"\n" +
 		                     "        }\n" +
 		                     "    ]\n" +
@@ -52,13 +56,14 @@ public class StringControllerTest {
 	}
 
 	@Test
-	public void shoutsWhenStringPathVariableIsTooLong() throws Exception {
-		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/wpeurhgiouwerhgoiuwerhgo");
+	public void shoutsWhenStringPostIsTooLong() throws Exception {
+		String value = "abcdefghijklmnop";
+		MockHttpServletRequestBuilder request = givenARequestFor("/java/string", value);
 		ResultActions actions = whenTheRequestIsMade(request);
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"validateStringPathVariable.username\",\n" +
+		                     "            \"fieldName\": \"validateStringPost.username\",\n" +
 		                     "            \"message\": \"Username Size Validation Message\"\n" +
 		                     "        }\n" +
 		                     "    ]\n" +
@@ -72,13 +77,14 @@ public class StringControllerTest {
 	}
 
 	@Test
-	public void shoutsWhenStringPathVariableDoesntMatchPattern() throws Exception {
-		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/mike42");
+	public void shoutsWhenStringPostDoesntMatchPattern() throws Exception {
+		String value = "mike42";
+		MockHttpServletRequestBuilder request = givenARequestFor("/java/string", value);
 		ResultActions actions = whenTheRequestIsMade(request);
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"validateStringPathVariable.username\",\n" +
+		                     "            \"fieldName\": \"validateStringPost.username\",\n" +
 		                     "            \"message\": \"Username Pattern Validation Message\"\n" +
 		                     "        }\n" +
 		                     "    ]\n" +
@@ -92,17 +98,18 @@ public class StringControllerTest {
 	}
 
 	@Test
-	public void shoutsWhenStringPathVariableIsTooLongAndDoesntMatchPattern() throws Exception {
-		MockHttpServletRequestBuilder request = givenARequestFor("/java/string/wpeurhgiouwerhgoiuwerhgo42");
+	public void shoutsWhenStringPostIsTooLongAndDoesntMatchPattern() throws Exception {
+		String value = "wpeurhgiouwerhgoiuwerhgo42";
+		MockHttpServletRequestBuilder request = givenARequestFor("/java/string", value);
 		ResultActions actions = whenTheRequestIsMade(request);
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"validateStringPathVariable.username\",\n" +
+		                     "            \"fieldName\": \"validateStringPost.username\",\n" +
 		                     "            \"message\": \"Username Pattern Validation Message\"\n" +
 		                     "        },\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"validateStringPathVariable.username\",\n" +
+		                     "            \"fieldName\": \"validateStringPost.username\",\n" +
 		                     "            \"message\": \"Username Size Validation Message\"\n" +
 		                     "        }\n" +
 		                     "    ]\n" +
@@ -115,9 +122,12 @@ public class StringControllerTest {
 				content.json(response));
 	}
 
-	private MockHttpServletRequestBuilder givenARequestFor(String url) {
-		return MockMvcRequestBuilders.get(url)
-		                             .characterEncoding("UTF-8");
+	private MockHttpServletRequestBuilder givenARequestFor(String url, String name) throws JsonProcessingException {
+		return MockMvcRequestBuilders
+				.post(url)
+				.characterEncoding("UTF-8")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(name);
 	}
 
 	private ResultActions whenTheRequestIsMade(MockHttpServletRequestBuilder request) throws Exception {

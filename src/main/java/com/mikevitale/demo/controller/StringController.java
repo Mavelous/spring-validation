@@ -26,9 +26,24 @@ public class StringController {
 			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
 			@Size(min = 2, max = 15, message = "Username Size Validation Message")
 			@Valid String username) {
-		LOG.info(() -> String.format("Got Username [%s]", username));
+		LOG.info(() -> String.format("validateStringPathVariable: Got Username [%s]", username));
 
-		System.out.printf("Username is [%s]%n%n", username);
+		System.out.printf("validateStringPathVariable: Username is [%s]%n", username);
+
+		return ResponseEntity.ok("Username is valid");
+	}
+
+	@PostMapping(path = "string",
+			consumes = APPLICATION_JSON_VALUE,
+			produces = APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> validateStringPost(
+			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
+			@Size(min = 2, max = 15, message = "Username Size Validation Message")
+			@RequestBody @Valid String username) {
+		LOG.info(() -> String.format("validateStringPost: Got Username [%s]", username));
+
+		System.out.printf("validateStringPost: Username is [%s]%n", username);
 
 		return ResponseEntity.ok("Username is valid");
 	}
