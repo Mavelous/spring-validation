@@ -1,7 +1,5 @@
 package com.mikevitale.demo.controller.errors;
 
-import java.io.IOException;
-
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpStatus;
@@ -92,10 +90,10 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	public ValidationErrorResponse onMethodArgumentNotValidException(HttpMessageNotReadableException e) throws IOException {
+	public ValidationErrorResponse onMethodArgumentNotValidException(HttpMessageNotReadableException e) {
 		var errors = new ValidationErrorResponse();
 
-		errors.add(new ValidationError(e.getHttpInputMessage().getBody().toString(), e.getMessage()));
+		errors.add(new ValidationError(e.getRootCause().getMessage(), e.getMessage()));
 
 		return errors;
 	}

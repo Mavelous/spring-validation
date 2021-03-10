@@ -79,8 +79,8 @@ public class IntPostControllerTest {
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"id\",\n" +
-		                     "            \"message\": \"Failed to convert value of type 'java.lang.String' to required type 'int'; nested exception is java.lang.NumberFormatException: For input string: \\\"wegyrguywery\\\"\"\n" +
+		                     "            \"fieldName\": \"Unrecognized token 'wegyrguywery': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')\\n at [Source: (PushbackInputStream); line: 1, column: 13]\",\n" +
+		                     "            \"message\": \"JSON parse error: Unrecognized token 'wegyrguywery': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false'); nested exception is com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'wegyrguywery': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')\\n at [Source: (PushbackInputStream); line: 1, column: 13]\"" +
 		                     "        }\n" +
 		                     "    ]\n" +
 		                     "}";
