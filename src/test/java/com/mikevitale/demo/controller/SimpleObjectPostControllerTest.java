@@ -19,9 +19,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(ObjectController.class)
+@WebMvcTest(SimpleObjectController.class)
 @AutoConfigureMockMvc
-public class ObjectPutControllerTest {
+public class SimpleObjectPostControllerTest {
 	@Autowired
 	private MockMvc mvc;
 
@@ -132,7 +132,7 @@ public class ObjectPutControllerTest {
 	}
 
 	private MockHttpServletRequestBuilder givenARequestFor(String requestBody) {
-		return MockMvcRequestBuilders.put("/java/object")
+		return MockMvcRequestBuilders.post("/java/object")
 		                             .contentType(MediaType.APPLICATION_JSON)
 		                             .characterEncoding("UTF-8")
 		                             .content(requestBody);

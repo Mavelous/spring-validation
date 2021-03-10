@@ -1,5 +1,7 @@
 package com.mikevitale.demo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mikevitale.demo.model.JavaUsername;
 
 import org.junit.jupiter.api.Test;
@@ -17,16 +19,19 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(ObjectController.class)
+@WebMvcTest(SimpleObjectController.class)
 @AutoConfigureMockMvc
-public class ObjectDeleteControllerTest {
+public class SimpleObjectPutControllerTest {
 	@Autowired
 	private MockMvc mvc;
+
+	@Autowired
+	private ObjectMapper objectMapper;
 
 	@Test
 	public void validObject() throws Exception {
 		JavaUsername validUsername = new JavaUsername("mike");
-		final var request = givenARequestFor(validUsername);
+		final var request = givenARequestForUsername(validUsername);
 		final ResultActions actions = whenTheRequestIsMade(request);
 		thenExpect(actions,
 				MockMvcResultMatchers.status().isOk(),
@@ -36,13 +41,13 @@ public class ObjectDeleteControllerTest {
 	@Test
 	public void shoutsWhenObjectNameIsTooLong() throws Exception {
 		JavaUsername username = new JavaUsername("wpeurhgiouwerhgoiuwerhgo");
-		final var request = givenARequestFor(username);
+		final var request = givenARequestForUsername(username);
 		final ResultActions actions = whenTheRequestIsMade(request);
 
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"deleteUsernameAsObject.username.username\",\n" +
+		                     "            \"fieldName\": \"username\",\n" +
 		                     "            \"message\": \"Username Size Validation Message\"\n" +
 		                     "        }\n" +
 		                     "    ]\n" +
@@ -57,13 +62,13 @@ public class ObjectDeleteControllerTest {
 	@Test
 	public void shoutsWhenObjectNameDoesntMatchPattern() throws Exception {
 		JavaUsername username = new JavaUsername("1234");
-		final var request = givenARequestFor(username);
+		final var request = givenARequestForUsername(username);
 		final ResultActions actions = whenTheRequestIsMade(request);
 
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"deleteUsernameAsObject.username.username\",\n" +
+		                     "            \"fieldName\": \"username\",\n" +
 		                     "            \"message\": \"Username Pattern Validation Message\"\n" +
 		                     "        }\n" +
 		                     "    ]\n" +
@@ -78,17 +83,17 @@ public class ObjectDeleteControllerTest {
 	@Test
 	public void shoutsWhenObjectNameIsTooShortAndDoesntMatchPattern() throws Exception {
 		JavaUsername username = new JavaUsername("1");
-		final var request = givenARequestFor(username);
+		final var request = givenARequestForUsername(username);
 		final ResultActions actions = whenTheRequestIsMade(request);
 
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"deleteUsernameAsObject.username.username\",\n" +
+		                     "            \"fieldName\": \"username\",\n" +
 		                     "            \"message\": \"Username Size Validation Message\"\n" +
 		                     "        },\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"deleteUsernameAsObject.username.username\",\n" +
+		                     "            \"fieldName\": \"username\",\n" +
 		                     "            \"message\": \"Username Pattern Validation Message\"\n" +
 		                     "        }\n" +
 		                     "    ]\n" +
@@ -103,13 +108,13 @@ public class ObjectDeleteControllerTest {
 	@Test
 	public void shoutsWhenObjectNameIsTooShort() throws Exception {
 		JavaUsername username = new JavaUsername("a");
-		final var request = givenARequestFor(username);
+		final var request = givenARequestForUsername(username);
 		final ResultActions actions = whenTheRequestIsMade(request);
 
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
 		                     "        {\n" +
-		                     "            \"fieldName\": \"deleteUsernameAsObject.username.username\",\n" +
+		                     "            \"fieldName\": \"username\",\n" +
 		                     "            \"message\": \"Username Size Validation Message\"\n" +
 		                     "        }\n" +
 		                     "    ]\n" +
@@ -121,10 +126,16 @@ public class ObjectDeleteControllerTest {
 				content.json(response));
 	}
 
-	private MockHttpServletRequestBuilder givenARequestFor(JavaUsername username) {
-		return MockMvcRequestBuilders.delete("/java/object/" + username.getUsername())
+	private MockHttpServletRequestBuilder givenARequestForUsername(JavaUsername username) throws JsonProcessingException {
+		var requestBody = objectMapper.writeValueAsString(username);
+		return givenARequestFor(requestBody);
+	}
+
+	private MockHttpServletRequestBuilder givenARequestFor(String requestBody) {
+		return MockMvcRequestBuilders.put("/java/object")
 		                             .contentType(MediaType.APPLICATION_JSON)
-		                             .characterEncoding("UTF-8");
+		                             .characterEncoding("UTF-8")
+		                             .content(requestBody);
 	}
 
 	private ResultActions whenTheRequestIsMade(MockHttpServletRequestBuilder request) throws Exception {

@@ -15,8 +15,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @Validated
 @RequestMapping("/java/")
-public class ObjectController {
-	private static final Logger LOG = Logger.getLogger(ObjectController.class.getName());
+public class SimpleObjectController {
+	private static final Logger LOG = Logger.getLogger(SimpleObjectController.class.getName());
 
 	@PostMapping(path = "object",
 			consumes = APPLICATION_JSON_VALUE,
