@@ -18,16 +18,17 @@ import static org.springframework.test.util.AssertionErrors.fail;
 public class JavaUsernameTest {
 	Validator validator;
 
+	private JavaUsername username;
+
 	@BeforeEach
 	public void setUp() {
 		ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
 		validator = validatorFactory.getValidator();
+		username = new JavaUsername();
 	}
 
 	@Test
 	public void validUsernameMinSize() {
-		JavaUsername username = new JavaUsername();
-
 		username.setUsername("ab");
 
 		Set<ConstraintViolation<JavaUsername>> violations = validator.validate(username);
@@ -39,8 +40,6 @@ public class JavaUsernameTest {
 
 	@Test
 	public void validUsernameMaxSize() {
-		JavaUsername username = new JavaUsername();
-
 		username.setUsername("abcdefghijklmno");
 
 		Set<ConstraintViolation<JavaUsername>> violations = validator.validate(username);
@@ -52,8 +51,6 @@ public class JavaUsernameTest {
 
 	@Test
 	public void usernameTooLong() {
-		JavaUsername username = new JavaUsername();
-
 		username.setUsername("abcdefghijklmnop");
 
 		Set<ConstraintViolation<JavaUsername>> violations = validator.validate(username);
@@ -67,8 +64,6 @@ public class JavaUsernameTest {
 
 	@Test
 	public void usernameCannotContainNumber() {
-		JavaUsername username = new JavaUsername();
-
 		username.setUsername("12");
 
 		Set<ConstraintViolation<JavaUsername>> violations = validator.validate(username);
@@ -82,8 +77,6 @@ public class JavaUsernameTest {
 
 	@Test
 	public void usernameTooShort() {
-		JavaUsername username = new JavaUsername();
-
 		username.setUsername("a");
 
 		Set<ConstraintViolation<JavaUsername>> violations = validator.validate(username);
@@ -97,8 +90,6 @@ public class JavaUsernameTest {
 
 	@Test
 	public void usernameTooShortAndDoesntMatchPattern() {
-		JavaUsername username = new JavaUsername();
-
 		username.setUsername("1");
 
 		Set<ConstraintViolation<JavaUsername>> violations = validator.validate(username);
