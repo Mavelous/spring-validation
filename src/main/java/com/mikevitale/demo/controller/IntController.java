@@ -37,7 +37,7 @@ public class IntController {
 			@Min(value = 5, message = "A minimum value of 5 is required")
 			@Max(value = 9999, message = "A maximum value of 9999 can be given")
 			@RequestBody @Valid int id) {
-		LOG.info(() -> String.format("validatePathVariable(), Got id = %d", id));
+		LOG.info(() -> String.format("validateIntPost(), Got id = %d", id));
 		return ResponseEntity.ok("ID is valid");
 	}
 
@@ -49,7 +49,18 @@ public class IntController {
 			@Min(value = 5, message = "A minimum value of 5 is required")
 			@Max(value = 9999, message = "A maximum value of 9999 can be given")
 			@RequestBody @Valid int id) {
-		LOG.info(() -> String.format("validatePathVariable(), Got id = %d", id));
+		LOG.info(() -> String.format("validateIntPut(), Got id = %d", id));
+		return ResponseEntity.ok("ID is valid");
+	}
+
+	@DeleteMapping("int/{id}")
+	@ResponseBody
+	ResponseEntity<String> validateIntDelete(
+			@PathVariable("id")
+			@Min(value = 5, message = "A minimum value of 5 is required")
+			@Max(value = 9999, message = "A maximum value of 9999 can be given")
+					int id) {
+		LOG.info(() -> String.format("validateIntDelete(), Got id = %d", id));
 		return ResponseEntity.ok("ID is valid");
 	}
 }
