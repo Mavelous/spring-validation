@@ -1,7 +1,5 @@
 package com.mikevitale.demo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,12 +120,9 @@ public class StringDeleteControllerTest {
 				content.json(response));
 	}
 
-	private MockHttpServletRequestBuilder givenARequestFor(String url, String name) throws JsonProcessingException {
+	private MockHttpServletRequestBuilder givenARequestFor(String url, String name) {
 		return MockMvcRequestBuilders
-				.delete(url)
-				.characterEncoding("UTF-8")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(name);
+				.delete(url + "/" + name);
 	}
 
 	private ResultActions whenTheRequestIsMade(MockHttpServletRequestBuilder request) throws Exception {
