@@ -40,4 +40,16 @@ public class IntController {
 		LOG.info(() -> String.format("validatePathVariable(), Got id = %d", id));
 		return ResponseEntity.ok("ID is valid");
 	}
+
+	@PutMapping(path = "int",
+			consumes = APPLICATION_JSON_VALUE,
+			produces = APPLICATION_JSON_VALUE)
+	@ResponseBody
+	ResponseEntity<String> validateIntPut(
+			@Min(value = 5, message = "A minimum value of 5 is required")
+			@Max(value = 9999, message = "A maximum value of 9999 can be given")
+			@RequestBody @Valid int id) {
+		LOG.info(() -> String.format("validatePathVariable(), Got id = %d", id));
+		return ResponseEntity.ok("ID is valid");
+	}
 }
