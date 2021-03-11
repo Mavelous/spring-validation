@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import javax.validation.Valid;
 
 import com.mikevitale.demo.model.JavaPerson;
+import com.mikevitale.demo.model.JavaUsername;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -34,5 +35,14 @@ public class ComplexObjectController {
 		LOG.info(() -> String.format("Got Person [%s]", person));
 
 		return ResponseEntity.ok("Person is valid");
+	}
+
+	@DeleteMapping(path = "object/{username}",
+			consumes = APPLICATION_JSON_VALUE,
+			produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> deleteUsernameAsObject(@Valid @PathVariable("username") JavaUsername username) {
+		LOG.info(() -> String.format("Got Username [%s]", username));
+
+		return ResponseEntity.ok("Username is valid");
 	}
 }
