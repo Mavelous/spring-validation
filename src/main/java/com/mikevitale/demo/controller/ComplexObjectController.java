@@ -8,10 +8,7 @@ import com.mikevitale.demo.model.JavaPerson;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -24,7 +21,16 @@ public class ComplexObjectController {
 	@PostMapping(path = "object",
 			consumes = APPLICATION_JSON_VALUE,
 			produces = APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> getUsernameAsObject(@Valid @RequestBody JavaPerson person) {
+	public ResponseEntity<String> postUsernameAsObject(@Valid @RequestBody JavaPerson person) {
+		LOG.info(() -> String.format("Got Person [%s]", person));
+
+		return ResponseEntity.ok("Person is valid");
+	}
+
+	@PutMapping(path = "object",
+	         consumes = APPLICATION_JSON_VALUE,
+	         produces = APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> putUsernameAsObject(@Valid @RequestBody JavaPerson person) {
 		LOG.info(() -> String.format("Got Person [%s]", person));
 
 		return ResponseEntity.ok("Person is valid");
