@@ -4,16 +4,18 @@ import javax.validation.Valid;
 
 public class JavaPerson {
 	@Valid
-	private JavaUsername username = new JavaUsername();
+	public JavaUsername username = new JavaUsername();
 
 	@Valid
-	private JavaPhoneNumber phoneNumber = new JavaPhoneNumber();
+	public JavaPhoneNumber phoneNumber = new JavaPhoneNumber();
 
-	public void setUsername(String username) {
-		this.username.setUsername(username);;
+	public JavaPerson() {}
+
+	public void setUsername(JavaUsername username) {
+		this.username = username;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber.setPhoneNumber(phoneNumber);
+	public void setPhoneNumber(JavaPhoneNumber phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 }

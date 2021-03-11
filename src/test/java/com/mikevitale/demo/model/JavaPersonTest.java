@@ -29,7 +29,8 @@ public class JavaPersonTest {
 
 	@Test
 	public void personShouldHaveValidUsername() {
-		person.setUsername("mike");
+		JavaUsername username = new JavaUsername("mike");
+		person.setUsername(username);
 
 		Set<ConstraintViolation<JavaPerson>> violations = validator.validate(person);
 		printViolations(violations);
@@ -39,7 +40,8 @@ public class JavaPersonTest {
 
 	@Test
 	public void shoutsWhenPersonsUsernameIsTooShort() {
-		person.setUsername("a");
+		JavaUsername username = new JavaUsername("a");
+		person.setUsername(username);
 
 		Set<ConstraintViolation<JavaPerson>> violations = validator.validate(person);
 		printViolations(violations);
@@ -52,7 +54,8 @@ public class JavaPersonTest {
 
 	@Test
 	public void shoutsWhenPersonsUsernameIsTooLong() {
-		person.setUsername("abcdefghijklmnop");
+		JavaUsername username = new JavaUsername("abcdefghijklmnop");
+		person.setUsername(username);
 
 		Set<ConstraintViolation<JavaPerson>> violations = validator.validate(person);
 		printViolations(violations);
@@ -65,7 +68,8 @@ public class JavaPersonTest {
 
 	@Test
 	public void shoutsWhenPersonsUsernameDoesntMatchPattern() {
-		person.setUsername("12");
+		JavaUsername username = new JavaUsername("12");
+		person.setUsername(username);
 
 		Set<ConstraintViolation<JavaPerson>> violations = validator.validate(person);
 		printViolations(violations);
@@ -78,7 +82,8 @@ public class JavaPersonTest {
 
 	@Test
 	public void personShouldHaveValidPhoneNumber() {
-		person.setPhoneNumber("11234567890");
+		JavaPhoneNumber phoneNumber = new JavaPhoneNumber("11234567890");
+		person.setPhoneNumber(phoneNumber);
 
 		Set<ConstraintViolation<JavaPerson>> violations = validator.validate(person);
 		printViolations(violations);
@@ -88,7 +93,8 @@ public class JavaPersonTest {
 
 	@Test
 	public void shoutsWhenPhoneNumberTooShort() {
-		person.setPhoneNumber("1");
+		JavaPhoneNumber phoneNumber = new JavaPhoneNumber("1");
+		person.setPhoneNumber(phoneNumber);
 
 		Set<ConstraintViolation<JavaPerson>> violations = validator.validate(person);
 		printViolations(violations);
