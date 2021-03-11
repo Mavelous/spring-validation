@@ -122,7 +122,7 @@ public class SimpleObjectDeleteControllerTest {
 	}
 
 	private MockHttpServletRequestBuilder givenARequestFor(JavaUsername username) {
-		return MockMvcRequestBuilders.delete("/java/object/" + username.getUsername())
+		return MockMvcRequestBuilders.delete("/java/object/" + username.username)
 		                             .contentType(MediaType.APPLICATION_JSON)
 		                             .characterEncoding("UTF-8");
 	}
