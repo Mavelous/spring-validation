@@ -15,7 +15,6 @@ public class JavaUsername {
 	}
 
 	public void setUsername(String username) {
-		System.out.printf("Username = [%s]%n", username);
 		this.username = username;
 	}
 
