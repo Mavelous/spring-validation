@@ -18,4 +18,12 @@ public class JavaPerson {
 	public void setPhoneNumber(JavaPhoneNumber phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
+	@Override
+	public String toString() {
+		return "JavaPerson{" +
+		       "username=" + username +
+		       ", phoneNumber=" + phoneNumber +
+		       '}';
+	}
 }
