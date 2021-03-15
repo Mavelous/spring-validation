@@ -23,9 +23,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(RequestEntityController.class)
+@WebMvcTest(ObjectWithHeaderController.class)
 @AutoConfigureMockMvc
-public class RequestEntityTest {
+public class ObjectWithHeaderPostTest {
 	@Autowired
 	private MockMvc mvc;
 
@@ -44,11 +44,11 @@ public class RequestEntityTest {
 	}
 
 	@Test
-	public void validRequestEntity() throws Exception {
+	public void validObject() throws Exception {
 		person.setUsername(VALID_USERNAME);
 		person.setPhoneNumber(VALID_PHONE_NUMBER);
 
-		final var request = givenARequest2For(person);
+		final var request = givenARequestFor(person);
 
 		final ResultActions actions = whenTheRequestIsMade(request);
 		thenExpect(actions,
@@ -56,10 +56,14 @@ public class RequestEntityTest {
 				MockMvcResultMatchers.content().contentType(APPLICATION_JSON));
 	}
 
-	private MockHttpServletRequestBuilder givenARequest2For(JavaPerson person) throws JsonProcessingException {
+	private MockHttpServletRequestBuilder givenARequestFor(JavaPerson person) throws JsonProcessingException {
 		var requestBody = objectMapper.writeValueAsString(person);
 		System.out.printf("****** ==> [%s]%n", requestBody);
-		return MockMvcRequestBuilders.post("/java/requestEntity")
+		return givenARequestFor(requestBody);
+	}
+
+	private MockHttpServletRequestBuilder givenARequestFor(String requestBody) {
+		return MockMvcRequestBuilders.post("/java/header")
 		                             .contentType(APPLICATION_JSON)
 		                             .characterEncoding("UTF-8")
 		                             .header("uuid", VALID_UUID)
