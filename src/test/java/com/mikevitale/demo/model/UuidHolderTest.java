@@ -16,6 +16,7 @@ import static org.springframework.test.util.AssertionErrors.fail;
 
 public class UuidHolderTest {
 	private static final String VALID_UUID = "1234abcd-ef56-78ab-90cd-ef1234abcd56";
+	private static final String VALID_UUID_ALL_CAPS = "1234ABCD-EF56-78AB-90CD-EF1234ABCD56";
 
 	Validator validator;
 
@@ -31,6 +32,17 @@ public class UuidHolderTest {
 	@Test
 	public void validUuid() {
 		uuid.setUuid(VALID_UUID);
+
+		Set<ConstraintViolation<UuidHolder>> violations = validator.validate(uuid);
+
+		printViolations(violations);
+
+		assertEquals(0, violations.size());
+	}
+
+	@Test
+	public void validUuidCaseInsensitive() {
+		uuid.setUuid(VALID_UUID_ALL_CAPS);
 
 		Set<ConstraintViolation<UuidHolder>> violations = validator.validate(uuid);
 
