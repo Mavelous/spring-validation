@@ -23,9 +23,7 @@ class KotlinPhoneNumberTest {
 	fun phoneNumberShouldBeCorrectLengthAndPattern() {
 		phoneNumber = KotlinPhoneNumber("11234567890")
 		val violations = validator.validate(phoneNumber)
-
 		printViolations(violations)
-
 		assertEquals(0, violations.size)
 	}
 
@@ -63,5 +61,4 @@ class KotlinPhoneNumberTest {
 			System.out.printf("***** ==> [%s]%n", it.message)
 		}
 	}
-
 }
