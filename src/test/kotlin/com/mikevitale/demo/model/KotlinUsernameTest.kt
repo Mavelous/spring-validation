@@ -1,11 +1,8 @@
 package com.mikevitale.demo.model
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.springframework.test.util.AssertionErrors
-import java.util.*
 import javax.validation.ConstraintViolation
 import javax.validation.Validation
 import javax.validation.Validator
@@ -44,8 +41,7 @@ class KotlinUsernameTest {
 		printViolations(violations)
 		assertFalse(violations.isEmpty())
 		assertEquals(1, violations.size)
-		assertEquals("Username Size Validation Message",
-				Objects.requireNonNull(violations.stream().findFirst().orElse(null))!!.message)
+		assertTrue(violations.any { it.message.contains("Username Size Validation Message") })
 	}
 
 	@Test
@@ -55,8 +51,7 @@ class KotlinUsernameTest {
 		printViolations(violations)
 		assertFalse(violations.isEmpty())
 		assertEquals(1, violations.size)
-		assertEquals("Username Pattern Validation Message",
-				Objects.requireNonNull(violations.stream().findFirst().orElse(null))!!.message)
+		assertTrue(violations.any { it.message.contains("Username Pattern Validation Message") })
 	}
 
 	@Test
@@ -66,8 +61,7 @@ class KotlinUsernameTest {
 		printViolations(violations)
 		assertFalse(violations.isEmpty())
 		assertEquals(1, violations.size)
-		assertEquals("Username Size Validation Message",
-				Objects.requireNonNull(violations.stream().findFirst().orElse(null))!!.message)
+		assertTrue(violations.any { it.message.contains("Username Size Validation Message") })
 	}
 
 	@Test
@@ -77,13 +71,13 @@ class KotlinUsernameTest {
 		printViolations(violations)
 		assertFalse(violations.isEmpty())
 		assertEquals(2, violations.size)
-		violations.stream().filter { v: ConstraintViolation<KotlinUsername> -> v.message.contains("Pattern") }.findAny().ifPresentOrElse({ }) { AssertionErrors.fail("Message not found") }
-		violations.stream().filter { v: ConstraintViolation<KotlinUsername> -> v.message.contains("Size") }.findAny().ifPresentOrElse({ }) { AssertionErrors.fail("Message not found") }
+		assertTrue(violations.any { it.message.contains("Pattern") })
+		assertTrue(violations.any { it.message.contains("Size") })
 	}
 
 	private fun printViolations(violations: Set<ConstraintViolation<KotlinUsername>>) {
-		for (violation in violations) {
-			System.out.printf("***** ==> [%s]%n", violation.message)
+		violations.forEach {
+			System.out.printf("***** ==> [%s]%n", it.message)
 		}
 	}
 }
