@@ -41,7 +41,7 @@ class KotlinUsernameTest {
 		printViolations(violations)
 		assertFalse(violations.isEmpty())
 		assertEquals(1, violations.size)
-		assertTrue(violations.any { it.message.contains("Username Size Validation Message") })
+		assertTrue(violations.any { it.message.equals("Username Size Validation Message") })
 	}
 
 	@Test
@@ -51,7 +51,7 @@ class KotlinUsernameTest {
 		printViolations(violations)
 		assertFalse(violations.isEmpty())
 		assertEquals(1, violations.size)
-		assertTrue(violations.any { it.message.contains("Username Pattern Validation Message") })
+		assertTrue(violations.any { it.message.equals("Username Pattern Validation Message") })
 	}
 
 	@Test
@@ -61,7 +61,7 @@ class KotlinUsernameTest {
 		printViolations(violations)
 		assertFalse(violations.isEmpty())
 		assertEquals(1, violations.size)
-		assertTrue(violations.any { it.message.contains("Username Size Validation Message") })
+		assertTrue(violations.any { it.message.equals("Username Size Validation Message") })
 	}
 
 	@Test
@@ -71,8 +71,8 @@ class KotlinUsernameTest {
 		printViolations(violations)
 		assertFalse(violations.isEmpty())
 		assertEquals(2, violations.size)
-		assertTrue(violations.any { it.message.contains("Pattern") })
-		assertTrue(violations.any { it.message.contains("Size") })
+		assertTrue(violations.any { it.message.equals("Username Pattern Validation Message") })
+		assertTrue(violations.any { it.message.equals("Username Size Validation Message") })
 	}
 
 	private fun printViolations(violations: Set<ConstraintViolation<KotlinUsername>>) {
