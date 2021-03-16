@@ -27,18 +27,8 @@ public class JavaPhoneNumberTest {
 	}
 
 	@Test
-	public void phoneNumberShouldBeCorrectLength() {
+	public void phoneNumberShouldBeCorrectLengthAndPattern() {
 		phoneNumber.setPhoneNumber("11234567890");
-		Set<ConstraintViolation<JavaPhoneNumber>> violations = validator.validate(phoneNumber);
-
-		printViolations(violations);
-
-		assertEquals(0, violations.size());
-	}
-
-	@Test
-	public void phoneNumberShouldBeCorrectPattern() {
-		phoneNumber.setPhoneNumber("12234567890");
 		Set<ConstraintViolation<JavaPhoneNumber>> violations = validator.validate(phoneNumber);
 
 		printViolations(violations);
