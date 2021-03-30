@@ -23,8 +23,8 @@ open class KStringController {
 			@Size(min = 2, max = 15, message = "Username Size Validation Message")
 			@PathVariable("username") username: String?
 	): ResponseEntity<String>? {
-		logger.info { String.format("validateStringPathVariable: Got Username [%s]", username) }
-		System.out.printf("validateStringPathVariable: Username is [%s]%n", username)
+		logger.info { "validateStringPathVariable: Got Username [$username]" }
+		System.out.printf("validateStringPathVariable: Username is [$username]%n")
 
 		return ResponseEntity.ok("Username is valid")
 	}

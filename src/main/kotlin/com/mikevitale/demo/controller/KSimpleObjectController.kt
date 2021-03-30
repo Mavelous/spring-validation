@@ -19,7 +19,7 @@ open class KSimpleObjectController {
 			consumes = [APPLICATION_JSON_VALUE],
 			produces = [APPLICATION_JSON_VALUE])
 	open fun getUsernameAsObject(@RequestBody @Valid username: KotlinUsername?): ResponseEntity<String>? {
-		logger.info { String.format("Got Username [%s]", username) }
+		logger.info { "Got Username [$username]" }
 		return ResponseEntity.ok("Username is valid")
 	}
 }
