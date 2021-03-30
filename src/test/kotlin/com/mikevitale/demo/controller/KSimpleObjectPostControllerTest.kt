@@ -1,8 +1,8 @@
 package com.mikevitale.demo.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.mikevitale.demo.model.JavaUsername
 import com.mikevitale.demo.model.KotlinUsername
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -15,7 +15,9 @@ import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.ResultMatcher
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.ContentResultMatchers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import java.lang.Exception
 
 @ExtendWith(SpringExtension::class)
 @WebMvcTest(KSimpleObjectController::class)
@@ -38,9 +40,72 @@ class KSimpleObjectPostControllerTest {
 	}
 
 	@Test
-	@Disabled(value = "Currently returning 200, not 400.")
 	fun shoutsWhenObjectNameIsTooLong() {
 		val username = KotlinUsername("wpeurhgiouwerhgoiuwerhgo")
+		val request = givenARequestForUsername(username)
+		val actions = whenTheRequestIsMade(request)
+		val response = """{
+    "validationErrors": [
+        {
+            "fieldName": "username",
+            "message": "Username Size Validation Message"
+        }
+    ]
+}"""
+		val content = MockMvcResultMatchers.content()
+		thenExpect(actions,
+				MockMvcResultMatchers.status().isBadRequest,
+				content.contentType(MediaType.APPLICATION_JSON),
+				content.json(response))
+	}
+
+	@Test
+	fun shoutsWhenObjectNameDoesntMatchPattern() {
+		val username = KotlinUsername("1234")
+		val request = givenARequestForUsername(username)
+		val actions = whenTheRequestIsMade(request)
+		val response = """{
+    "validationErrors": [
+        {
+            "fieldName": "username",
+            "message": "Username Pattern Validation Message"
+        }
+    ]
+}"""
+		val content = MockMvcResultMatchers.content()
+		thenExpect(actions,
+				MockMvcResultMatchers.status().isBadRequest,
+				content.contentType(MediaType.APPLICATION_JSON),
+				content.json(response))
+	}
+
+	@Test
+	fun shoutsWhenObjectNameIsTooShortAndDoesntMatchPattern() {
+		val username = KotlinUsername("1")
+		val request = givenARequestForUsername(username)
+		val actions = whenTheRequestIsMade(request)
+		val response = """{
+    "validationErrors": [
+        {
+            "fieldName": "username",
+            "message": "Username Size Validation Message"
+        },
+        {
+            "fieldName": "username",
+            "message": "Username Pattern Validation Message"
+        }
+    ]
+}"""
+		val content = MockMvcResultMatchers.content()
+		thenExpect(actions,
+				MockMvcResultMatchers.status().isBadRequest,
+				content.contentType(MediaType.APPLICATION_JSON),
+				content.json(response))
+	}
+
+	@Test
+	fun shoutsWhenObjectNameIsTooShort() {
+		val username = KotlinUsername("a")
 		val request = givenARequestForUsername(username)
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
