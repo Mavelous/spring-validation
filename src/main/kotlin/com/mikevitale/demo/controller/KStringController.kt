@@ -10,7 +10,6 @@ import javax.validation.constraints.Size
 
 private val logger = KotlinLogging.logger {}
 
-
 @RestController
 @Validated
 @RequestMapping("/kotlin/")
