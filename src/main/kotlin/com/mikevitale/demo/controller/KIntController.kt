@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 
-
 private val logger = KotlinLogging.logger {}
 
 @RestController
@@ -21,7 +20,7 @@ open class KIntController {
 			@Max(value = 9999, message = "A maximum value of 9999 can be given")
 			@PathVariable("id") id: Int)
 	: ResponseEntity<String>? {
-		logger.info { String.format("validatePathVariable(), Got id = %d", id) }
+		logger.info { "validateIntPathVariable: Got id [$id]" }
 		return ResponseEntity.ok("ID is valid")
 	}
 }
