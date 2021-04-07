@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 
+
 private val logger = KotlinLogging.logger {}
 
 @RestController
@@ -15,10 +16,10 @@ private val logger = KotlinLogging.logger {}
 open class KIntController {
 	@GetMapping("int/{id}")
 	@ResponseBody
-	fun validateIntPathVariable(
-			@PathVariable("id") id:
+	open fun validateIntPathVariable(
 			@Min(value = 5, message = "A minimum value of 5 is required")
-			@Max(value = 9999, message = "A maximum value of 9999 can be given") Int)
+			@Max(value = 9999, message = "A maximum value of 9999 can be given")
+			@PathVariable("id") id: Int)
 	: ResponseEntity<String>? {
 		logger.info { String.format("validatePathVariable(), Got id = %d", id) }
 		return ResponseEntity.ok("ID is valid")

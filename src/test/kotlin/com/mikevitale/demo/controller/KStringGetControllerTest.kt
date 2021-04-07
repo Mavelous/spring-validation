@@ -1,6 +1,5 @@
 package com.mikevitale.demo.controller
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -24,7 +23,6 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 	}
 
 	@Test
-	@Disabled(value = "Currently returning 200, not 400.")
 	fun shoutsWhenStringPathVariableIsTooShort() {
 		val request = givenARequestFor("/kotlin/string/a")
 		val actions = whenTheRequestIsMade(request)
@@ -44,7 +42,6 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 	}
 
 	@Test
-	@Disabled(value = "Currently returning 200, not 400.")
 	fun shoutsWhenStringPathVariableIsTooLong() {
 		val request = givenARequestFor("/kotlin/string/wpeurhgiouwerhgoiuwerhgo")
 		val actions = whenTheRequestIsMade(request)
@@ -64,7 +61,6 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 	}
 
 	@Test
-	@Disabled(value = "Currently returning 200, not 400.")
 	fun shoutsWhenStringPathVariableDoesntMatchPattern() {
 		val request = givenARequestFor("/kotlin/string/mike42")
 		val actions = whenTheRequestIsMade(request)
@@ -84,7 +80,6 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 	}
 
 	@Test
-	@Disabled(value = "Currently returning 200, not 400.")
 	fun shoutsWhenStringPathVariableIsTooLongAndDoesntMatchPattern() {
 		val request = givenARequestFor("/kotlin/string/wpeurhgiouwerhgoiuwerhgo42")
 		val actions = whenTheRequestIsMade(request)

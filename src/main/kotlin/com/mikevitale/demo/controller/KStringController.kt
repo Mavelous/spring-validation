@@ -18,7 +18,7 @@ open class KStringController {
 	@GetMapping(path = ["string/{username}"],
 			produces = [APPLICATION_JSON_VALUE])
 	@ResponseBody
-	fun validateStringPathVariable(
+	open fun validateStringPathVariable(
 			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
 			@Size(min = 2, max = 15, message = "Username Size Validation Message")
 			@PathVariable("username") username: String?

@@ -1,6 +1,5 @@
 package com.mikevitale.demo.controller
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -24,7 +23,6 @@ class KIntControllerTest(@Autowired private val mvc: MockMvc) {
 	}
 
 	@Test
-	@Disabled(value = "Currently returning 200, not 400.")
 	fun shoutsWhenIntegerPathVariableIsTooLow() {
 		val request = givenARequestFor("/kotlin/int/4")
 		val resultActions = whenTheRequestIsMade(request)
@@ -44,7 +42,6 @@ class KIntControllerTest(@Autowired private val mvc: MockMvc) {
 	}
 
 	@Test
-	@Disabled(value = "Currently returning 200, not 400.")
 	fun shoutsWhenIntegerPathVariableIsTooHigh() {
 		val request = givenARequestFor("/kotlin/int/10000")
 		val resultActions = whenTheRequestIsMade(request)
