@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 
 @WebMvcTest(KIntController::class)
-class KIntControllerTest(@Autowired private val mvc: MockMvc) {
+class KIntGetControllerTest(@Autowired private val mvc: MockMvc) {
 	@Test
 	fun validIntegerPathVariable() {
 		val request: MockHttpServletRequestBuilder = givenARequestFor("/kotlin/int/5")
