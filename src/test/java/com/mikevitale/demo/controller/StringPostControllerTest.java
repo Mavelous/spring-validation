@@ -1,7 +1,5 @@
 package com.mikevitale.demo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -22,7 +20,7 @@ public class StringPostControllerTest {
 	@Test
 	public void validStringPost() throws Exception {
 		String value = "mike";
-		MockHttpServletRequestBuilder request = givenARequestFor("/java/string", value);
+		MockHttpServletRequestBuilder request = givenARequestFor(value);
 		ResultActions actions = whenTheRequestIsMade(request);
 		thenExpect(actions,
 				MockMvcResultMatchers.status().isOk(),
@@ -32,7 +30,7 @@ public class StringPostControllerTest {
 	@Test
 	public void shoutsWhenStringPostIsTooShort() throws Exception {
 		String value = "a";
-		MockHttpServletRequestBuilder request = givenARequestFor("/java/string", value);
+		MockHttpServletRequestBuilder request = givenARequestFor(value);
 		ResultActions actions = whenTheRequestIsMade(request);
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
@@ -53,7 +51,7 @@ public class StringPostControllerTest {
 	@Test
 	public void shoutsWhenStringPostIsTooLong() throws Exception {
 		String value = "abcdefghijklmnop";
-		MockHttpServletRequestBuilder request = givenARequestFor("/java/string", value);
+		MockHttpServletRequestBuilder request = givenARequestFor(value);
 		ResultActions actions = whenTheRequestIsMade(request);
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
@@ -74,7 +72,7 @@ public class StringPostControllerTest {
 	@Test
 	public void shoutsWhenStringPostDoesntMatchPattern() throws Exception {
 		String value = "mike42";
-		MockHttpServletRequestBuilder request = givenARequestFor("/java/string", value);
+		MockHttpServletRequestBuilder request = givenARequestFor(value);
 		ResultActions actions = whenTheRequestIsMade(request);
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
@@ -95,7 +93,7 @@ public class StringPostControllerTest {
 	@Test
 	public void shoutsWhenStringPostIsTooLongAndDoesntMatchPattern() throws Exception {
 		String value = "wpeurhgiouwerhgoiuwerhgo42";
-		MockHttpServletRequestBuilder request = givenARequestFor("/java/string", value);
+		MockHttpServletRequestBuilder request = givenARequestFor(value);
 		ResultActions actions = whenTheRequestIsMade(request);
 		final var response = "{\n" +
 		                     "    \"validationErrors\": [\n" +
@@ -117,9 +115,9 @@ public class StringPostControllerTest {
 				content.json(response));
 	}
 
-	private MockHttpServletRequestBuilder givenARequestFor(String url, String name) throws JsonProcessingException {
+	private MockHttpServletRequestBuilder givenARequestFor(String name) {
 		return MockMvcRequestBuilders
-				.post(url)
+				.post("/java/string")
 				.characterEncoding("UTF-8")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(name);
