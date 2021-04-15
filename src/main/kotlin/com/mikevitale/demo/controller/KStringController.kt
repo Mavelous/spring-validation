@@ -29,4 +29,14 @@ open class KStringController {
 		return ResponseEntity.ok("Username is valid")
 	}
 
+	@PostMapping(path = ["string"], consumes = [APPLICATION_JSON_VALUE], produces = [APPLICATION_JSON_VALUE])
+	@ResponseBody
+	open fun validateStringPost(
+			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
+			@Size(min = 2, max = 15, message = "Username Size Validation Message")
+			@RequestBody username: String?): ResponseEntity<String>? {
+		logger.info { String.format("validateStringPost: Got Username [%s]", username) }
+		System.out.printf("validateStringPost: Username is [%s]%n", username)
+		return ResponseEntity.ok("Username is valid")
+	}
 }
