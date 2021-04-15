@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 	@Test
 	fun validStringPathVariable() {
-		val request: MockHttpServletRequestBuilder = givenARequestFor("/kotlin/string/mike")
+		val request: MockHttpServletRequestBuilder = givenARequestFor("mike")
 		val actions: ResultActions = whenTheRequestIsMade(request)
 		thenExpect(actions,
 				MockMvcResultMatchers.status().isOk,
@@ -24,7 +24,7 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 
 	@Test
 	fun shoutsWhenStringPathVariableIsTooShort() {
-		val request = givenARequestFor("/kotlin/string/a")
+		val request = givenARequestFor("a")
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
     "validationErrors": [
@@ -43,7 +43,7 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 
 	@Test
 	fun shoutsWhenStringPathVariableIsTooLong() {
-		val request = givenARequestFor("/kotlin/string/wpeurhgiouwerhgoiuwerhgo")
+		val request = givenARequestFor("wpeurhgiouwerhgoiuwerhgo")
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
     "validationErrors": [
@@ -62,7 +62,7 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 
 	@Test
 	fun shoutsWhenStringPathVariableDoesntMatchPattern() {
-		val request = givenARequestFor("/kotlin/string/mike42")
+		val request = givenARequestFor("mike42")
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
     "validationErrors": [
@@ -81,7 +81,7 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 
 	@Test
 	fun shoutsWhenStringPathVariableIsTooLongAndDoesntMatchPattern() {
-		val request = givenARequestFor("/kotlin/string/wpeurhgiouwerhgoiuwerhgo42")
+		val request = givenARequestFor("wpeurhgiouwerhgoiuwerhgo42")
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
     "validationErrors": [
@@ -103,7 +103,7 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 	}
 
 	private fun givenARequestFor(url: String): MockHttpServletRequestBuilder {
-		return MockMvcRequestBuilders.get(url)
+		return MockMvcRequestBuilders.get("/kotlin/string/$url")
 				.characterEncoding("UTF-8")
 	}
 
