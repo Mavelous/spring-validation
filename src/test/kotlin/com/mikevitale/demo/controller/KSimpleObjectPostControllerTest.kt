@@ -11,7 +11,8 @@ import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.ResultMatcher
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(KSimpleObjectController::class)
 class KSimpleObjectPostControllerTest(@Autowired private val mvc: MockMvc) {
@@ -24,9 +25,11 @@ class KSimpleObjectPostControllerTest(@Autowired private val mvc: MockMvc) {
 		val validUsername = KotlinUsername("mike")
 		val request: MockHttpServletRequestBuilder = givenARequestForUsername(validUsername)
 		val actions: ResultActions = whenTheRequestIsMade(request)
-		thenExpect(actions,
-				MockMvcResultMatchers.status().isOk,
-				MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
+		thenExpect(
+			actions,
+			status().isOk,
+			content().contentType(MediaType.APPLICATION_JSON)
+		)
 	}
 
 	@Test
@@ -35,18 +38,20 @@ class KSimpleObjectPostControllerTest(@Autowired private val mvc: MockMvc) {
 		val request = givenARequestForUsername(username)
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
-    "validationErrors": [
-        {
-            "fieldName": "username",
-            "message": "Username Size Validation Message"
-        }
-    ]
-}"""
-		val content = MockMvcResultMatchers.content()
-		thenExpect(actions,
-				MockMvcResultMatchers.status().isBadRequest,
-				content.contentType(MediaType.APPLICATION_JSON),
-				content.json(response))
+			"validationErrors": [
+				{
+					"fieldName": "username",
+					"message": "Username Size Validation Message"
+				}
+			]
+		}""".trimIndent()
+		val content = content()
+		thenExpect(
+			actions,
+			status().isBadRequest,
+			content.contentType(MediaType.APPLICATION_JSON),
+			content.json(response)
+		)
 	}
 
 	@Test
@@ -55,18 +60,20 @@ class KSimpleObjectPostControllerTest(@Autowired private val mvc: MockMvc) {
 		val request = givenARequestForUsername(username)
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
-    "validationErrors": [
-        {
-            "fieldName": "username",
-            "message": "Username Pattern Validation Message"
-        }
-    ]
-}"""
-		val content = MockMvcResultMatchers.content()
-		thenExpect(actions,
-				MockMvcResultMatchers.status().isBadRequest,
-				content.contentType(MediaType.APPLICATION_JSON),
-				content.json(response))
+			"validationErrors": [
+				{
+					"fieldName": "username",
+					"message": "Username Pattern Validation Message"
+				}
+			]
+		}""".trimIndent()
+		val content = content()
+		thenExpect(
+			actions,
+			status().isBadRequest,
+			content.contentType(MediaType.APPLICATION_JSON),
+			content.json(response)
+		)
 	}
 
 	@Test
@@ -75,22 +82,24 @@ class KSimpleObjectPostControllerTest(@Autowired private val mvc: MockMvc) {
 		val request = givenARequestForUsername(username)
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
-    "validationErrors": [
-        {
-            "fieldName": "username",
-            "message": "Username Size Validation Message"
-        },
-        {
-            "fieldName": "username",
-            "message": "Username Pattern Validation Message"
-        }
-    ]
-}"""
-		val content = MockMvcResultMatchers.content()
-		thenExpect(actions,
-				MockMvcResultMatchers.status().isBadRequest,
-				content.contentType(MediaType.APPLICATION_JSON),
-				content.json(response))
+			"validationErrors": [
+				{
+					"fieldName": "username",
+					"message": "Username Size Validation Message"
+				},
+				{
+					"fieldName": "username",
+					"message": "Username Pattern Validation Message"
+				}
+			]
+		}""".trimIndent()
+		val content = content()
+		thenExpect(
+			actions,
+			status().isBadRequest,
+			content.contentType(MediaType.APPLICATION_JSON),
+			content.json(response)
+		)
 	}
 
 	@Test
@@ -99,37 +108,32 @@ class KSimpleObjectPostControllerTest(@Autowired private val mvc: MockMvc) {
 		val request = givenARequestForUsername(username)
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
-    "validationErrors": [
-        {
-            "fieldName": "username",
-            "message": "Username Size Validation Message"
-        }
-    ]
-}"""
-		val content = MockMvcResultMatchers.content()
-		thenExpect(actions,
-				MockMvcResultMatchers.status().isBadRequest,
-				content.contentType(MediaType.APPLICATION_JSON),
-				content.json(response))
+			"validationErrors": [
+				{
+					"fieldName": "username",
+					"message": "Username Size Validation Message"
+				}
+			]
+		}""".trimIndent()
+		val content = content()
+		thenExpect(
+			actions,
+			status().isBadRequest,
+			content.contentType(MediaType.APPLICATION_JSON),
+			content.json(response)
+		)
 	}
 
-	private fun givenARequestForUsername(username: KotlinUsername): MockHttpServletRequestBuilder {
-		val requestBody = objectMapper.writeValueAsString(username)
-		return givenARequestFor(requestBody)
-	}
+	private fun givenARequestForUsername(username: KotlinUsername) = givenARequestFor(objectMapper.writeValueAsString(username))
 
-	private fun givenARequestFor(requestBody: String): MockHttpServletRequestBuilder {
-		return MockMvcRequestBuilders.post("/kotlin/object")
-				.contentType(MediaType.APPLICATION_JSON)
-				.characterEncoding("UTF-8")
-				.content(requestBody)
-	}
+	private fun givenARequestFor(requestBody: String) =
+		MockMvcRequestBuilders
+			.post("/kotlin/object")
+			.contentType(MediaType.APPLICATION_JSON)
+			.characterEncoding("UTF-8")
+			.content(requestBody)
 
-	private fun whenTheRequestIsMade(request: MockHttpServletRequestBuilder): ResultActions {
-		return mvc.perform(request)
-	}
+	private fun whenTheRequestIsMade(request: MockHttpServletRequestBuilder) = mvc.perform(request)
 
-	private fun thenExpect(resultActions: ResultActions, vararg matchers: ResultMatcher) {
-		resultActions.andExpect(ResultMatcher.matchAll(*matchers))
-	}
+	private fun thenExpect(resultActions: ResultActions, vararg matchers: ResultMatcher) = resultActions.andExpect(ResultMatcher.matchAll(*matchers))
 }

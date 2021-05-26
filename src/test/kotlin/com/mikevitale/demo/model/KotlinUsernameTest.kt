@@ -1,78 +1,70 @@
 package com.mikevitale.demo.model
 
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import javax.validation.ConstraintViolation
 import javax.validation.Validation
-import javax.validation.Validator
-import javax.validation.ValidatorFactory
 
 class KotlinUsernameTest {
-	lateinit var validator: Validator
-	lateinit var username: KotlinUsername
-
-	@BeforeEach
-	fun setup() {
-		val factory: ValidatorFactory = Validation.buildDefaultValidatorFactory()
-		validator = factory.validator
-	}
+	private val validator = Validation.buildDefaultValidatorFactory().validator
 
 	@Test
 	fun validUsernameMinSize() {
-		username = KotlinUsername("ab")
+		val username = KotlinUsername("ab")
 		val violations: Set<ConstraintViolation<KotlinUsername>> = validator.validate(username)
 		printViolations(violations)
-		assertEquals(0, violations.size)
+		assertThat(violations).isEmpty()
 	}
 
 	@Test
 	fun validUsernameMaxSize() {
-		username = KotlinUsername("abcdefghijklmno")
+		val username = KotlinUsername("abcdefghijklmno")
 		val violations = validator.validate(username)
 		printViolations(violations)
-		assertEquals(0, violations.size)
+		assertThat(violations).isEmpty()
 	}
 
 	@Test
 	fun usernameTooLong() {
-		username = KotlinUsername("abcdefghijklmnop")
+		val username = KotlinUsername("abcdefghijklmnop")
 		val violations = validator.validate(username)
 		printViolations(violations)
 		assertFalse(violations.isEmpty())
-		assertEquals(1, violations.size)
-		assertTrue(violations.any { it.message.equals("Username Size Validation Message") })
+		assertThat(violations).extracting("message").containsExactly("Username Size Validation Message")
 	}
 
 	@Test
 	fun usernameCannotContainNumber() {
-		username = KotlinUsername("12")
+		val username = KotlinUsername("12")
 		val violations = validator.validate(username)
 		printViolations(violations)
 		assertFalse(violations.isEmpty())
-		assertEquals(1, violations.size)
-		assertTrue(violations.any { it.message.equals("Username Pattern Validation Message") })
+		assertThat(violations).extracting("message").containsExactly("Username Pattern Validation Message")
+
 	}
 
 	@Test
 	fun usernameTooShort() {
-		username = KotlinUsername("a")
+		val username = KotlinUsername("a")
 		val violations = validator.validate(username)
 		printViolations(violations)
 		assertFalse(violations.isEmpty())
-		assertEquals(1, violations.size)
-		assertTrue(violations.any { it.message.equals("Username Size Validation Message") })
+		assertThat(violations).extracting("message").containsExactly("Username Size Validation Message")
+
 	}
 
 	@Test
 	fun usernameTooShortAndDoesntMatchPattern() {
-		username = KotlinUsername("1")
+		val username = KotlinUsername("1")
 		val violations = validator.validate(username)
 		printViolations(violations)
 		assertFalse(violations.isEmpty())
-		assertEquals(2, violations.size)
-		assertTrue(violations.any { it.message.equals("Username Pattern Validation Message") })
-		assertTrue(violations.any { it.message.equals("Username Size Validation Message") })
+		assertThat(violations).extracting("message").containsExactlyInAnyOrder(
+			"Username Pattern Validation Message",
+			"Username Size Validation Message"
+		)
+
 	}
 
 	private fun printViolations(violations: Set<ConstraintViolation<KotlinUsername>>) {

@@ -9,7 +9,8 @@ import org.springframework.test.web.servlet.ResultActions
 import org.springframework.test.web.servlet.ResultMatcher
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(KStringController::class)
 class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
@@ -17,9 +18,11 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 	fun validStringPathVariable() {
 		val request: MockHttpServletRequestBuilder = givenARequestFor("mike")
 		val actions: ResultActions = whenTheRequestIsMade(request)
-		thenExpect(actions,
-				MockMvcResultMatchers.status().isOk,
-				MockMvcResultMatchers.content().bytes("Username is valid".toByteArray()))
+		thenExpect(
+			actions,
+			status().isOk,
+			content().bytes("Username is valid".toByteArray())
+		)
 	}
 
 	@Test
@@ -27,18 +30,20 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 		val request = givenARequestFor("a")
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
-    "validationErrors": [
-        {
-            "fieldName": "validateStringPathVariable.username",
-            "message": "Username Size Validation Message"
-        }
-    ]
-}"""
-		val content = MockMvcResultMatchers.content()
-		thenExpect(actions,
-				MockMvcResultMatchers.status().isBadRequest,
-				content.contentType(APPLICATION_JSON),
-				content.json(response))
+			"validationErrors": [
+				{
+					"fieldName": "validateStringPathVariable.username",
+					"message": "Username Size Validation Message"
+				}
+			]
+		}""".trimIndent()
+		val content = content()
+		thenExpect(
+			actions,
+			status().isBadRequest,
+			content.contentType(APPLICATION_JSON),
+			content.json(response)
+		)
 	}
 
 	@Test
@@ -46,18 +51,20 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 		val request = givenARequestFor("wpeurhgiouwerhgoiuwerhgo")
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
-    "validationErrors": [
-        {
-            "fieldName": "validateStringPathVariable.username",
-            "message": "Username Size Validation Message"
-        }
-    ]
-}"""
-		val content = MockMvcResultMatchers.content()
-		thenExpect(actions,
-				MockMvcResultMatchers.status().isBadRequest,
-				content.contentType(APPLICATION_JSON),
-				content.json(response))
+			"validationErrors": [
+				{
+					"fieldName": "validateStringPathVariable.username",
+					"message": "Username Size Validation Message"
+				}
+			]
+		}""".trimIndent()
+		val content = content()
+		thenExpect(
+			actions,
+			status().isBadRequest,
+			content.contentType(APPLICATION_JSON),
+			content.json(response)
+		)
 	}
 
 	@Test
@@ -65,18 +72,20 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 		val request = givenARequestFor("mike42")
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
-    "validationErrors": [
-        {
-            "fieldName": "validateStringPathVariable.username",
-            "message": "Username Pattern Validation Message"
-        }
-    ]
-}"""
-		val content = MockMvcResultMatchers.content()
-		thenExpect(actions,
-				MockMvcResultMatchers.status().isBadRequest,
-				content.contentType(APPLICATION_JSON),
-				content.json(response))
+			"validationErrors": [
+				{
+					"fieldName": "validateStringPathVariable.username",
+					"message": "Username Pattern Validation Message"
+				}
+			]
+		}""".trimIndent()
+		val content = content()
+		thenExpect(
+			actions,
+			status().isBadRequest,
+			content.contentType(APPLICATION_JSON),
+			content.json(response)
+		)
 	}
 
 	@Test
@@ -84,34 +93,29 @@ class KStringGetControllerTest(@Autowired private val mvc: MockMvc) {
 		val request = givenARequestFor("wpeurhgiouwerhgoiuwerhgo42")
 		val actions = whenTheRequestIsMade(request)
 		val response = """{
-    "validationErrors": [
-        {
-            "fieldName": "validateStringPathVariable.username",
-            "message": "Username Pattern Validation Message"
-        },
-        {
-            "fieldName": "validateStringPathVariable.username",
-            "message": "Username Size Validation Message"
-        }
-    ]
-}"""
-		val content = MockMvcResultMatchers.content()
-		thenExpect(actions,
-				MockMvcResultMatchers.status().isBadRequest,
-				content.contentType(APPLICATION_JSON),
-				content.json(response))
+			"validationErrors": [
+				{
+					"fieldName": "validateStringPathVariable.username",
+					"message": "Username Pattern Validation Message"
+				},
+				{
+					"fieldName": "validateStringPathVariable.username",
+					"message": "Username Size Validation Message"
+				}
+			]
+		}""".trimIndent()
+		val content = content()
+		thenExpect(
+			actions,
+			status().isBadRequest,
+			content.contentType(APPLICATION_JSON),
+			content.json(response)
+		)
 	}
 
-	private fun givenARequestFor(url: String): MockHttpServletRequestBuilder {
-		return MockMvcRequestBuilders.get("/kotlin/string/$url")
-				.characterEncoding("UTF-8")
-	}
+	private fun givenARequestFor(url: String) = MockMvcRequestBuilders.get("/kotlin/string/$url").characterEncoding("UTF-8")
 
-	private fun whenTheRequestIsMade(request: MockHttpServletRequestBuilder): ResultActions {
-		return mvc.perform(request)
-	}
+	private fun whenTheRequestIsMade(request: MockHttpServletRequestBuilder) = mvc.perform(request)
 
-	private fun thenExpect(resultActions: ResultActions, vararg matchers: ResultMatcher) {
-		resultActions.andExpect(ResultMatcher.matchAll(*matchers))
-	}
+	private fun thenExpect(resultActions: ResultActions, vararg matchers: ResultMatcher) = resultActions.andExpect(ResultMatcher.matchAll(*matchers))
 }
