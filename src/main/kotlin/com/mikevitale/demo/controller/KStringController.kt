@@ -21,8 +21,8 @@ open class KStringController {
 	open fun validateStringPathVariable(
 			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
 			@Size(min = 2, max = 15, message = "Username Size Validation Message")
-			@PathVariable("username") username: String?
-	): ResponseEntity<String>? {
+			@PathVariable("username") username: String
+	): ResponseEntity<String> {
 		logger.info { "validateStringPathVariable: Got Username [$username]" }
 		System.out.printf("validateStringPathVariable: Username is [$username]%n")
 
@@ -34,7 +34,7 @@ open class KStringController {
 	open fun validateStringPost(
 			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
 			@Size(min = 2, max = 15, message = "Username Size Validation Message")
-			@RequestBody username: String?): ResponseEntity<String>? {
+			@RequestBody username: String): ResponseEntity<String> {
 		logger.info { String.format("validateStringPost: Got Username [%s]", username) }
 		System.out.printf("validateStringPost: Username is [%s]%n", username)
 		return ResponseEntity.ok("Username is valid")
@@ -45,7 +45,7 @@ open class KStringController {
 	open fun validateStringPut(
 			@Pattern(regexp = "[A-Za-z]+", message = "Username Pattern Validation Message")
 			@Size(min = 2, max = 15, message = "Username Size Validation Message")
-			@RequestBody username: String?): ResponseEntity<String>? {
+			@RequestBody username: String): ResponseEntity<String> {
 		logger.info { String.format("validateStringPost: Got Username [%s]", username) }
 		System.out.printf("validateStringPost: Username is [%s]%n", username)
 		return ResponseEntity.ok("Username is valid")

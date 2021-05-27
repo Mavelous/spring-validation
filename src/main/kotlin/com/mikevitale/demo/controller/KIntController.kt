@@ -19,7 +19,7 @@ open class KIntController {
 			@Min(value = 5, message = "A minimum value of 5 is required")
 			@Max(value = 9999, message = "A maximum value of 9999 can be given")
 			@PathVariable("id") id: Int)
-	: ResponseEntity<String>? {
+	: ResponseEntity<String> {
 		logger.info { "validateIntPathVariable: Got id [$id]" }
 		return ResponseEntity.ok("ID is valid")
 	}
